@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -27,20 +28,10 @@
 </head>
 
 <body>
-    <!-- Preloader Start -->
-    {% comment %} <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="preloader-circle"></div>
-                <div class="preloader-img pere-text">
-                    <img src="assets/img/logo/logo.png" alt="">
-                </div>
-            </div>
-        </div>
-    </div> {% endcomment %}
-    <!-- Preloader Start -->
+    
     <header>
         <!-- Header Start -->
+        
         <div class="header-area header-transparrent">
             <div class="headder-top header-sticky">
                 <div class="container">
@@ -51,34 +42,43 @@
                                 <a href="{% url 'home' %}"><img src="{% static 'img/logo/logo.png' %}" alt="Logo"></a>
                             </div>
                         </div>
+                        
                         <div class="col-lg-9 col-md-9">
                             <div class="menu-wrapper">
                                 <!-- Main-menu -->
                                 <div class="main-menu">
                                     <nav class="d-none d-lg-block">
+                                        {% if user.is_authenticated %}
                                         <ul id="navigation">
+                                         
                                             <li><a href="{% url 'home' %}">Home</a></li>
-                                            <li><a href="#">Find a Job</a></li>
-                                            <li><a href="#">About</a></li>
+                                            <li><a href="{% url 'joblist' %}">Find a Job</a></li>
+                                            <li><a href="{% url 'about' %}">About</a></li>
                                             <li><a href="#">Page</a>
                                                 <ul class="submenu">
-                                                    <li><a href="#">Blog</a></li>
+                                                    <li><a href="{% url "blog" %]}">Blog</a></li>
                                                     <li><a href="#">Blog Details</a></li>
                                                     <li><a href="#">Elements</a></li>
                                                     <li><a href="#">Job Details</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="#">Contact</a></li>
+                                            <li><a href="{% url "contactpage"%}">Contact</a></li>
+                                            <li><a href="{% url 'logout' %}">LogOut</a></li>
+                                        
                                         </ul>
                                     </nav>
                                 </div>
                                 <!-- Header-btn -->
+                              
+                                {% else %}
                                 <div class="header-btn d-none f-right d-lg-block">
-                                    <a href="#" class="btn head-btn1">Register</a>
-                                    <a href="#" class="btn head-btn2">Login</a>
+                                    <a href="{% url "SignUp" %}" class="btn head-btn1">Register</a>
+                                    <a href="{% url "login" %}" class="btn head-btn2">Login</a>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
+                     
                         <!-- Mobile Menu -->
                         <div class="col-12">
                             <div class="mobile_menu d-block d-lg-none"></div>
@@ -89,6 +89,8 @@
         </div>
         <!-- Header End -->
     </header>
+
+
     <!-- Hero Area Start-->
     {% load static %}
     <div class="slider-area">
@@ -154,7 +156,8 @@
                         <h2 class="contact-title">Get in Touch</h2>
                     </div>
                     <div class="col-lg-8">
-                        <form class="form-contact contact_form" action="contact_process.php" method="post" id="contactForm" novalidate="novalidate">
+                        <form class="form-contact contact_form" action="{% url "contactpage" %}" method="post" id="contactForm" novalidate="novalidate">
+                            {% csrf_token %}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
@@ -265,6 +268,8 @@
                                     <div id="mc_embed_signup">
                                         <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
                                               method="get" class="subscribe_form relative mail_part">
+
+                                              {% csrf_token %}
                                             <input type="email" name="email" id="newsletter-form-email" placeholder="Email Address"
                                                    class="placeholder hide-on-focus" onfocus="this.placeholder = ''"
                                                    onblur="this.placeholder = ' Email Address '">
@@ -383,7 +388,5 @@
 <script src="{% static 'js/files/plugins.js' %}"></script>
 <script src="{% static 'js/files/main.js' %}"></script>
 
-        
-    </body>
-    
-    </html>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static '../static/css/signup_css.css' %}">
+  </head>
+  <body>
+    <div class="container" id="container">
+      <div class="form-container sign-up-container">
+        
+      </div>
+      <div class="form-container log-in-container">
+        <center> 
+          <p style="color: red;">{{error}}</p>
+          <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <h1>Login</h1>
+            <input type="text" name="username" placeholder="Enter Your Name" onclick="speakPlaceholder(this)" required>
+            {% if errors.username %}
+                <p style="color: red;">{{ errors.username }}</p>
+            {% endif %}
+             
+            <input type="password" name="password" placeholder="Enter your password" onclick="speakPlaceholder(this)" required>
+            {% if errors.password %}
+               <p style="color: red;">{{ errors.password }}</p>
+            {% endif %}
+             
+            <button>Login</button>
+          </form>
+          <div class="social-media">
+            {% load socialaccount %}
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+          </div>
+          
+        </center>
+      </div>
+      <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel right">
+          <h1>Howdy, Stranger!</h1>
+          <h1>Welcome to</h1>
+          <h1>Job Adda!</h1>
+          <p>if you don't have account then register first</p>
+          <button>
+            <a  href="{% url 'SignUp' %}" class="ghost" id="signUp">SignUp</a>
+          </button>      
+        </div>
+        </div>
+        </div>
+    </div>
+    <script>
+      function speakPlaceholder(element) {
+          // Check if speechSynthesis is supported
+          if ('speechSynthesis' in window) {
+              // Get the placeholder text
+              let textToSpeak = element.placeholder;
+  
+              if (textToSpeak) {
+                  // Create a new instance of SpeechSynthesisUtterance
+                  let speech = new SpeechSynthesisUtterance(textToSpeak);
+                  
+                  // Set the language (optional)
+                  speech.lang = 'hi-US';
+
+               
+                  
+                  // Cancel any ongoing speech to avoid overlapping
+                  window.speechSynthesis.cancel();
+  
+                  // Speak the text
+                  window.speechSynthesis.speak(speech);
+              } else {
+                  console.warn('No placeholder text to speak.');
+              }
+          } else {
+              console.error('Sorry, your browser does not support speech synthesis.');
+          }
+      }
+  </script>
+  
+  </body>
+</html>

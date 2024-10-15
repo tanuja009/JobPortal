@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'JobPortalApp'
+    'JobPortalApp',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'JobPortal.urls'
@@ -131,6 +136,35 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # Adding the static directory
 ]
+
+SITE_ID = 1
+
+# URL redirects after login/logout
+LOGIN_REDIRECT_URL = '/home'
+LOGOUT_REDIRECT_URL = '/'
+
+# Authentication backends
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of allauth
+    'django.contrib.auth.backends.ModelBackend',
+
+    # allauth specific authentication methods
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# Email verification (optional)
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+# GitHub provider configuration
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        'APP': {
+            'client_id': 'Ov23liZvC0M5m4yTG3d4',
+            'secret': '6b11931669b820b26d41c208c655b86f8093578a',
+            'key': ''
+        }
+    }
+}
 
 
 # STATIC_ROOT is the directory where static files will be collected when you run the `collectstatic` command (for production).

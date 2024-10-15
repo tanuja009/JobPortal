@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html class="no-js" lang="zxx">
     <head>
@@ -50,34 +51,43 @@
                                 <a href="{% url 'home' %}"><img src="{% static 'img/logo/logo.png' %}" alt="Logo"></a>
                             </div>
                         </div>
+                       
                         <div class="col-lg-9 col-md-9">
                             <div class="menu-wrapper">
                                 <!-- Main-menu -->
                                 <div class="main-menu">
                                     <nav class="d-none d-lg-block">
+                                        {% if user.is_authenticated %}
                                         <ul id="navigation">
+                                         
                                             <li><a href="{% url 'home' %}">Home</a></li>
-                                            <li><a href="#">Find a Job</a></li>
+                                            <li><a href="{% url 'joblist' %}">Find a Job</a></li>
                                             <li><a href="{% url 'about' %}">About</a></li>
                                             <li><a href="#">Page</a>
                                                 <ul class="submenu">
-                                                    <li><a href="#">Blog</a></li>
+                                                    <li><a href="{% url "blog" %]}">Blog</a></li>
                                                     <li><a href="#">Blog Details</a></li>
                                                     <li><a href="#">Elements</a></li>
                                                     <li><a href="#">Job Details</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="#">Contact</a></li>
+                                            <li><a href="{% url "contactpage"%}">Contact</a></li>
+                                            <li><a href="{% url 'logout' %}">LogOut</a></li>
+                                        
                                         </ul>
                                     </nav>
                                 </div>
                                 <!-- Header-btn -->
+                              
+                                {% else %}
                                 <div class="header-btn d-none f-right d-lg-block">
-                                    <a href="#" class="btn head-btn1">Register</a>
-                                    <a href="#" class="btn head-btn2">Login</a>
+                                    <a href="{% url "SignUp" %}" class="btn head-btn1">Register</a>
+                                    <a href="{% url "login" %}" class="btn head-btn2">Login</a>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
+                       
                         <!-- Mobile Menu -->
                         <div class="col-12">
                             <div class="mobile_menu d-block d-lg-none"></div>
@@ -306,9 +316,9 @@
                                 {% for job in jobs %}
                                 <div class="single-job-items mb-30">
                                     <div class="job-items">
-                                        <div class="company-img">
+                                        {% comment %} <div class="company-img">
                                             <a href="#"><img src="{% static job.image %}" alt=""></a>
-                                        </div>
+                                        </div> {% endcomment %}
                                         <div class="job-tittle job-tittle2">
                                             <a href="#">
                                                 <h4>{{ job.title }}</h4>
@@ -316,7 +326,7 @@
                                             <ul>
                                                 <li>{{ job.company }}</li>
                                                 <li><i class="fas fa-map-marker-alt"></i>{{ job.location }}</li>
-                                                <li>{{ job.salary }}</li>
+                                                <li>{{ job.description }}</li>
                                             </ul>
                                         </div>
                                     </div>

@@ -29,21 +29,6 @@
 </head>
 
 <body>
-        <!-- Preloader Start -->
-       
-        {% comment %} <div id="preloader-active">
-            <div class="preloader d-flex align-items-center justify-content-center">
-                <div class="preloader-inner position-relative">
-                    <div class="preloader-circle"></div>
-                    <div class="preloader-img pere-text">
-                        <img src="{% static 'img/logo/logo.png' %}" alt="Logo">
-                    </div>
-                </div>
-            </div>
-        </div>
-         {% endcomment %}
-   
-      <!-- Preloader Start -->
       <header>
           <!-- Header Start -->
           <div class="header-area header-transparrent">
@@ -56,34 +41,50 @@
                                   <a href="{% url 'home' %}"><img src="{% static 'img/logo/logo.png' %}" alt="Logo"></a>
                               </div>
                           </div>
+                          {% comment %} {% if user.is_authenticated %} {% endcomment %}
                           <div class="col-lg-9 col-md-9">
                               <div class="menu-wrapper">
                                   <!-- Main-menu -->
                                   <div class="main-menu">
                                       <nav class="d-none d-lg-block">
+                                        {% if user.is_authenticated %} 
                                           <ul id="navigation">
+                                           
                                               <li><a href="{% url 'home' %}">Home</a></li>
                                               <li><a href="{% url 'joblist' %}">Find a Job</a></li>
                                               <li><a href="{% url 'about' %}">About</a></li>
                                               <li><a href="#">Page</a>
                                                   <ul class="submenu">
-                                                      <li><a href="#">Blog</a></li>
+                                                      <li><a href="{% url "show_post" %}">Blog</a></li>
                                                       <li><a href="#">Blog Details</a></li>
                                                       <li><a href="#">Elements</a></li>
                                                       <li><a href="#">Job Details</a></li>
                                                   </ul>
                                               </li>
-                                              <li><a href="#">Contact</a></li>
+                                              <li><a href="{% url "contactpage"%}">Contact</a></li>
+                                              <li><a href="{% url 'logout' %}">LogOut</a></li>
+                                              <li><a href="#"><img src="{% static "img/gallery/userimage.png" %}" alt="description of the image" height="30px" width="30px">
+                                              <select>
+                                                <option>
+                                                    login
+                                                </option>
+                                              </select>
+                                              </a></li>
+                                          
                                           </ul>
                                       </nav>
                                   </div>
                                   <!-- Header-btn -->
+                                
+                                  {% else %}
                                   <div class="header-btn d-none f-right d-lg-block">
-                                      <a href="#" class="btn head-btn1">Register</a>
-                                      <a href="#" class="btn head-btn2">Login</a>
+                                      <a href="{% url "SignUp" %}" class="btn head-btn1">Register</a>
+                                      <a href="{% url "login" %}" class="btn head-btn2">Login</a>
                                   </div>
+                                  {% endif %}
                               </div>
                           </div>
+                          {% comment %} {% endif %} {% endcomment %}
                           <!-- Mobile Menu -->
                           <div class="col-12">
                               <div class="mobile_menu d-block d-lg-none"></div>
@@ -132,9 +133,9 @@
                                           </select>
                                       </div>
                                   </div>
-                                  <div class="search-form" id="searchtab" style="display:flex;justify-content:center;align-item:center;background-color:#fb246a;">
-                                      <button type="submit" class="jobbtn" style="color:black;text-decoration:none;background-color:#fb246a;border:none">Find job</button>
-                                  </div>	
+                                <div class="search-form" id="searchtab" style="display:flex;justify-content:center;align-item:center;background-color:#fb246a;">
+                                     <button type="submit" class="jobbtn" style="color:black;text-decoration:none;background-color:#fb246a;border:none"> <a href="{% url 'joblist' %}">Find job</a></button>
+                                  </div>
                               </form>	
                           </div>
                       </div>
