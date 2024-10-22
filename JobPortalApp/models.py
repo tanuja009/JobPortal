@@ -15,6 +15,8 @@ class Post_Info(models.Model):
     post_img= models.ImageField(upload_to='post_images/')
     desc= models.TextField()
     posted_at =models.DateTimeField(auto_now_add=True)
+
+    
   
 
 class Job(models.Model):
@@ -37,6 +39,6 @@ class Contact(models.Model):
 
 class Comment(models.Model):
    user=models.ForeignKey(User,on_delete=models.CASCADE)
-   post=models.ForeignKey(Post_Info,on_delete=models.CASCADE)
+   post=models.ForeignKey(Post_Info,on_delete=models.CASCADE, related_name='comments')
    content=models.TextField()
    content_at=models.DateTimeField(auto_now_add=True)

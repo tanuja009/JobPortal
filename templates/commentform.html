@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Post</title>
+    <title>Comment Form</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            background-color: #f2f2f2;
             padding: 20px;
         }
-        .form-container {
+        .comment-form-container {
             max-width: 600px;
             margin: 0 auto;
             background-color: #fff;
@@ -19,7 +19,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-        h1 {
+        h2 {
             text-align: center;
             margin-bottom: 20px;
             color: #333;
@@ -32,34 +32,24 @@
             display: block;
             margin-bottom: 5px;
         }
-        input[type="text"],
         textarea {
             width: 100%;
-            padding: 10px;
+            padding: 15px;
             font-size: 16px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            resize: vertical;
+            min-height: 120px;
             transition: border-color 0.3s;
         }
-        input[type="text"]:focus,
         textarea:focus {
             border-color: #007BFF;
-        }
-        textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-        input[type="file"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 100%;
+            outline: none;
         }
         .btn {
             display: block;
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background-color: #007BFF;
             color: white;
             font-size: 16px;
@@ -71,37 +61,40 @@
         .btn:hover {
             background-color: #0056b3;
         }
-        .form-container p {
+        .comment-form-container p {
             text-align: center;
             color: #777;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-    <div class="form-container">
-        <h1>Create a New Post</h1>
+  <div class="comment-form-container">
+    <h2>Leave a Comment</h2>
+    <form method="POST" action="{% url 'PostComments' post.id %}">  <!-- Ensure you are using the correct URL -->
+        {% csrf_token %}
+        <!-- Comment Text Field -->
+        <div class="form-group">
+            <label for="comment">Your Comment</label>
+            <textarea id="comment" name="content" placeholder="Enter your comment here..." required></textarea>
+        </div>
 
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}  
-            <!-- Image Upload Field -->
-            <div class="form-group">
-                <label for="image">Upload Image</label>
-                <input type="file" id="image" name="post_img" accept="image/*">
-            </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn">Post Comment</button>
+    </form>
+</div>
 
-              <!-- Content Field -->
-            <div class="form-group">
-                <label for="content">Content</label>
-                <textarea id="content" name="desc" placeholder="Enter the post content" required></textarea>
-            </div>
-            
-            <!-- Submit Button -->
-            <button type="submit" class="btn">Submit Post</button>
-        </form>
-
-        <p><a href="{% url 'Post_View' %}">Back to Post List</a></p>
-    </div>
-
+<div class="comments-section">
+    {% for comment in comments %}
+        <div class="comment-container">
+            <p><strong>{{ comment.post.post_img.url }}</strong></p>  <!-- This line assumes post_img is a field in your Post model -->
+            <p>{{ comment.content }}</p>
+            <p>{{ comment.author.username }} - {{ comment.created_at|date:"F j, Y, g:i a" }}</p>
+        </div>
+    {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+    {% endfor %}
+</div>
 </body>
 </html>

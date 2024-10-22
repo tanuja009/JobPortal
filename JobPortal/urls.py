@@ -19,7 +19,7 @@ from django.urls import path,include
 from JobPortalApp import views
 from django.conf import settings
 from django.conf.urls.static import static
-from JobPortalApp.views import HomepageView, AboutpageView,UploadCVView,SignUp,Login,joblist,contactpage
+from JobPortalApp.views import HomepageView, AboutpageView,UploadCVView,SignUp,Login,joblist,contactpage,Post_View,Createpost,PostComments
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,8 +32,10 @@ urlpatterns = [
     path("joblist/",joblist.as_view(),name="joblist"),
     path('logout/',views.logout,name="logout"),
     path('contactpage/', contactpage.as_view(), name='contactpage'),
-    # path('blog/',blog.as_view(),name="blog"),
-    path('show_post/',views.show_post,name="show_post")
+    path('Post_View/',Post_View.as_view(),name="Post_View"),
+    path('Createpost/',Createpost.as_view(),name="Createpost"),
+    path('PostComments/<int:pk>',PostComments.as_view(),name="PostComments"),
+    # path('show_post/',views.show_post,name="show_post")
 
 ]
 

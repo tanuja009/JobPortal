@@ -162,7 +162,16 @@ class joblist(LoginRequiredMixin,View):
     
 class Post_View(View):
     def get(self, request):
-        return render(request, 'blog.html')
+        context=Post_Info.objects.all().order_by("-posted_at")
+        print('ALL DATA:',context)
+        return render(request,"blog.html",{'context':context})
+    
+    
+        
+class Createpost(View):
+    def get(self,request):
+        return render(request,"createpost.html")
+    
 
     def post(self, request):
         user = request.user
@@ -172,50 +181,13 @@ class Post_View(View):
         # Ensure both the image and description are provided
         if post_img and desc:
             Post_Info.objects.create(username=user, post_img=post_img, desc=desc)
-            return redirect('show_posts')
+            return redirect('Post_View')
         else:
             # Handle case where either post_img or desc is missing
-            return render(request, 'blog.html', {
+            return render(request, 'createpost.html', {
                 'error': 'Both image and description are required.'
             })
-
-
-def show_post(request):
-    print("ccfc")
-    context=Post_Info.objects.all().values()
-    print('ALL DATA:',context)
-    return render(request,"blog.html",{'context':context})
-
-
-
-        # print("inside get method")
-
-        # if qur:
-        #     try:
-        #         # Filter posts based on the query
-        #         context = Post_Info.objects.filter(Q(posted_at=qur) | Q(username__username=qur))
-        #         print("Filtering with query:", qur)
-        #     except Exception as e:
-        #         print(f"Error while filtering posts: {e}")
-        #         context = Post_Info.objects.none()  # Return empty queryset on error
-        # else:
-        #     # Get all posts if no query is provided
-        #     context = Post_Info.objects.all()
-
-        # print("Retrieved posts:", context.values())  # Print actual data for debugging
-
-        # # Example: Uncomment and retrieve the liked posts for the current user if needed
-        # # if request.user.is_authenticated:
-        # #     user_likes = Post_Like.objects.filter(user=request.user).values_list('post_id', flat=True)
-        # # else:
-        # #     user_likes = []
-
-        # return render(request, 'blog.html', {
-        #     'data': context,
-        #     # 'user_likes': user_likes,  # Uncomment this if needed in the template
-        # })
-
-
+        
 class contactpage(LoginRequiredMixin,View):
     login_url = 'login/'
     def get(self, request):
@@ -254,37 +226,24 @@ class PostComments(LoginRequiredMixin, View):
     def get(self, request, pk):
         # Display the post details and comments on GET request
         post = get_object_or_404(Post_Info, pk=pk)
+        print(post)
         comments = post.comments.all()  # Get all comments related to the post
-        comment_form = CommentForm()
+        # comment_form = CommentForm()
 
-        context = {
+        comments = {
             'post': post,
             'comments': comments,
-            'comment_form': comment_form
+            # 'comment_form': comment_form
         }
-        return render(request, 'post_detail.html', context)
+        return render(request, 'commentform.html', comments)
 
     def post(self, request, pk):
         # Handle comment submission on POST request
-        post = get_object_or_404(Post_Info, pk=pk)
-        comment_form = CommentForm(request.POST)
-        
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.post = post  # Link the comment to the post
-            comment.author = request.user  # Set the author to the logged-in user
-            comment.save()
-            return redirect('post_detail', pk=post.pk)
-        
-        # If the form is invalid, redisplay the form with errors
-        comments = post.comments.all()  # Reload comments to display them again
-        context = {
-            'post': post,
-            'comments': comments,
-            'comment_form': comment_form
-        }
-        return render(request, 'post_detail.html', context)
+        post =get_object_or_404(Post_Info ,pk=pk)
+        comment_text =request.POST.get('comment')
 
+        comment=Comment.objects.create(post=post,user=request.user, content=comment_text)
+        return redirect('PostComments')
 
 
 
